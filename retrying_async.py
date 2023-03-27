@@ -37,7 +37,7 @@ def is_exception(obj):
 
 
 async def callback(attempt, exc, args, kwargs, delay=0.5, *, loop):
-    yield from asyncio.sleep(delay, loop=loop)
+    await asyncio.sleep(delay, loop=loop)
 
     return retry
 
@@ -91,7 +91,7 @@ def retry(
 
                     if timeout is None:
                         if asyncio.iscoroutinefunction(unpartial(fn)):
-                            ret = yield from ret
+                            ret = await ret
                     else:
                         if not asyncio.iscoroutinefunction(unpartial(fn)):
                             raise ConditionError(
@@ -99,7 +99,7 @@ def retry(
                             )
 
                         with async_timeout.timeout(timeout):
-                            ret = yield from ret
+                            ret = await ret
 
                     return ret
 
@@ -135,7 +135,7 @@ def retry(
                             ret = fallback(fn_args, fn_kwargs)
 
                             if asyncio.iscoroutinefunction(unpartial(fallback)):  # noqa
-                                ret = yield from ret
+                                ret = await ret
                         else:
                             ret = fallback
 
@@ -161,7 +161,7 @@ def retry(
                     attempt += 1
 
                     if asyncio.iscoroutinefunction(unpartial(callback)):
-                        ret = yield from ret
+                        ret = await ret
 
                     if ret is not retry:
                         return ret
