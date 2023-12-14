@@ -36,9 +36,8 @@ def is_exception(obj):
     )
 
 
-async def callback(attempt, exc, args, kwargs, delay=0.5, *, loop):
-    await asyncio.sleep(delay, loop=loop)
-
+async def callback(attempt, exc, args, kwargs, delay=0.5, *):
+    await asyncio.sleep(delay)
     return retry
 
 
@@ -149,7 +148,7 @@ def retry(
                     )
 
                     ret = callback(
-                        attempt, exc, fn_args, fn_kwargs, delay=_delay, loop=_loop,
+                        attempt, exc, fn_args, fn_kwargs, delay=_delay,
                     )
                     _delay *= backoff
                     if isinstance(jitter, tuple):
