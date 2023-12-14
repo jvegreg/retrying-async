@@ -36,7 +36,7 @@ def is_exception(obj):
     )
 
 
-async def callback(attempt, exc, args, kwargs, delay=0.5, *):
+async def callback(attempt, exc, args, kwargs, delay=0.5):
     await asyncio.sleep(delay)
     return retry
 
